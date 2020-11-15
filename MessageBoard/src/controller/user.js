@@ -1,6 +1,19 @@
 // user controller
 const User = require('../model/User')
 
+// 登录
+async function login(username, password) {
+    // 从数据库查询用户是否存在
+    const user = await User.findOne({
+        username, password
+    })
+    if(user != null) {
+        // 登录成功
+        return true
+    }
+    return false
+}
+
 // 注册
 async function register( userInfo = {} ) {
     // 插入数据库
@@ -11,5 +24,6 @@ async function register( userInfo = {} ) {
 }
 
 module.exports = {
-    register
+    register,
+    login
 }

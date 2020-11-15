@@ -6,6 +6,8 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa2-cors')
+const session = require('koa-generic-session')
+
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -20,6 +22,15 @@ app.use(cors({
 }))
 // 细节；如果origin:*，那么credentials就不能设置为true
 
+// 配置session
+app.keys = ['ASD$V%#@!@#RT'] // cookie的密钥
+app.use(session({
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 一天
+  }
+}))
 
 // middlewares
 app.use(bodyparser({
