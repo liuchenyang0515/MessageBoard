@@ -2,8 +2,32 @@
 
 const router = require('koa-router')()
 const loginCheck = require('../middleware/loginCheck')
-const { create, getList, del } = require('../controller/comment')
+const { create, getList, del, update } = require('../controller/comment')
 router.prefix('/comment')
+
+// 更新留言
+router.post('/update', loginCheck, async (ctx, next) => {
+    // 获取id content
+    const { _id, content } = ctx.request.body
+    // 获取用户名
+    const {username } = ctx.session.userInfo
+    // 执行更新
+    try {
+        const newData = await update(_id, username, content)
+        ctx.body = {
+            errno: 0,
+            data: newData
+        }
+    } catch (ex) {
+        // 失败
+        console.error('更新失败', ex)
+        ctx.body = {
+            errno: -1,
+            message: '更新失败'
+        }
+    }
+})
+
 
 // 删除留言
 router.post('/del', loginCheck, async (ctx, next) => {

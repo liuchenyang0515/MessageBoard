@@ -3,6 +3,18 @@
 const { where } = require('../model/Comment')
 const Comment = require('../model/Comment')
 
+
+// 更新留言
+async function update(_id, username, content) {
+    const newData = await Comment.findByIdAndUpdate(
+        { _id, username}, // 只能更新自己的留言
+        { content },
+        { new: true } // 返回更新之后的最新留言
+    )
+    return newData
+}
+
+
 // 删除留言
 async function del(_id, username) {
     await Comment.remove({
@@ -36,5 +48,6 @@ async function create(content, username) {
 module.exports = {
     create,
     getList,
-    del
+    del,
+    update
 }
