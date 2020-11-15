@@ -7,8 +7,10 @@ const CommentSchema = mongoose.Schema({
         required: true // 必须
     },
     username: String
+}, {
+    timestamps: true
 })
 
-const Commnet = mongoose.model('comment', CommentSchema)
+const Comment = mongoose.model('comment', CommentSchema)
 
 module.exports = Comment

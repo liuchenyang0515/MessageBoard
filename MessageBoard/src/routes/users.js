@@ -1,7 +1,16 @@
 const router = require('koa-router')()
 const { register, login } = require('../controller/user')
+const loginCheck = require('../middleware/loginCheck')
 
 router.prefix('/users')
+// 获取用户信息
+router.get('/getUserInfo', loginCheck, async (ctx, next) => { // 和前端接口对应
+  ctx.body = {
+    errno: 0,
+    data: ctx.session.userInfo
+  }
+})
+
 
 // 登录
 router.post('/login', async (ctx, next) => {
