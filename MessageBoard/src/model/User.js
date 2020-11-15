@@ -18,6 +18,6 @@ const UserSchema = mongoose.Schema({
     timestamps: true // 时间戳
 })
 
-const User = mongoose.model('user') // 数据库的users会将这个自动转换为复数形式
+const User = mongoose.model('user', UserSchema) // 数据库的users会将这个自动转换为复数形式
 
 module.exports = User
