@@ -2,8 +2,28 @@
 
 const router = require('koa-router')()
 const loginCheck = require('../middleware/loginCheck')
-const { create } = require('../controller/comment')
+const { create, getList } = require('../controller/comment')
 router.prefix('/comment')
+
+// 获取留言列表
+router.get('/list', loginCheck, async (ctx, next) => {
+    // 获取filterType: 1查看全部  2仅看自己
+    let { filterType } = ctx.query
+    filterType = parseInt(filterType) || 1
+
+    // 获取当前用户名
+    let username = ''
+    if (filterType === 2) {
+        username = ctx.session.userInfo.username
+    }
+
+    // 获取留言列表
+    const list = await getList(username)
+    ctx.body = {
+        errno: 0,
+        data: list
+    }
+}) 
 
 // 创建留言
 router.post('/create', loginCheck, async (ctx, next) => {
