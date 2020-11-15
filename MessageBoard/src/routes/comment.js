@@ -2,8 +2,31 @@
 
 const router = require('koa-router')()
 const loginCheck = require('../middleware/loginCheck')
-const { create, getList } = require('../controller/comment')
+const { create, getList, del } = require('../controller/comment')
 router.prefix('/comment')
+
+// 删除留言
+router.post('/del', loginCheck, async (ctx, next) => {
+    // 获取id
+    const { _id } = ctx.request.body
+    // 获取用户名
+    const { username } = ctx.session.userInfo
+    // 执行删除
+    try {
+        await del(_id, username)
+        ctx.body = {
+            errno: 0
+        }
+    } catch (ex) {
+        // 失败
+        console.error('删除失败', ex)
+        ctx.body = {
+            errno: -1,
+            message: '删除失败'
+        }
+    }
+})
+
 
 // 获取留言列表
 router.get('/list', loginCheck, async (ctx, next) => {

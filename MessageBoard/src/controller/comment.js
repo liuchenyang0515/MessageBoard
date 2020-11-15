@@ -3,6 +3,15 @@
 const { where } = require('../model/Comment')
 const Comment = require('../model/Comment')
 
+// 删除留言
+async function del(_id, username) {
+    await Comment.remove({
+        _id, 
+        username // 只能删除自己的
+    })
+}
+
+
 // 获取留言列表
 async function getList(username = '') {
     const whereOpt = {}
@@ -26,5 +35,6 @@ async function create(content, username) {
 
 module.exports = {
     create,
-    getList
+    getList,
+    del
 }
